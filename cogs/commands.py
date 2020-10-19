@@ -8,6 +8,10 @@ class Commands(commands.Cog):
     
     @commands.command()
     async def ping(self, ctx):
+        '''
+        This command returns the ping.
+        Usage: -ping
+        '''
         await ctx.send(f'Pong! {round(self.bot.latency * 1000)} ms')
 
 def setup(bot):
