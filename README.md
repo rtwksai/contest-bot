@@ -1,10 +1,10 @@
 # contest-bot
 
 ## Steps to install
-- pip3 install discord.py
+- `pip3 install discord.py`
 
 ## Steps to run
-- python3 bot.py
+- `python3 bot.py`
 
 ## Folder Heirarchy
 ```
@@ -29,4 +29,5 @@
 
 A small advice. While making changes, try working on a new branch.
 
+Do check out DiscordPy [documentation](https://discordpy.readthedocs.io/) for more details.
 
