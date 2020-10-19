@@ -10,14 +10,16 @@
 ```
 .
 ├── bot.py
-├── cf.py
 ├── cogs
 │   ├── commands.py
 │   ├── events.py
 ├── config.py
 ├── config.py.example
 ├── LICENSE
-└── README.md
+├── README.md
+└── utils
+    ├── cf.py
+    └── he.py
 ```
 
 - `bot.py` consists of all the core methods to run the bot. It is just like the *main* file. 
