@@ -1,10 +1,18 @@
 # contest-bot
 
+A simple discord bot to notify you regarding upcoming contests on Codeforces and Hackerearth. 
+
+### Disclaimer 
+The bot is still under construction, and can be buggy
+
 ## Steps to install
 - `pip3 install discord.py`
 
 ## Steps to run
 - `python3 bot.py`
+
+## Features as of now
+- Returns Codeforces contests in personal chat as an embed
 
 ## Folder Heirarchy
 ```
@@ -35,3 +43,6 @@ A small advice. While making changes, try working on a new branch.
 
 Do check out DiscordPy [documentation](https://discordpy.readthedocs.io/) for more details.
 
+## Contribution
+
+In case you find any issues, feel free to add them in the [Issues](https://github.com/DaKeiser/contest-bot/issues) tab.
