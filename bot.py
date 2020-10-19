@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-
 from config import *
 import discord
 from discord.ext import commands
@@ -10,17 +9,26 @@ import os
 # Make an automated script to set it up
 bot = commands.Bot(command_prefix=prefix)
 
-@bot.event
-async def on_ready():
-    print('We have logged in as {0.user}'.format(bot))
+@bot.command()
+async def load(ctx, extension):
+    bot.load_extension(f'cogs.{extension}')
 
-@bot.event
-async def on_message(message):
-    if message.author == bot.user:
-        return
+@load.error
+async def load_error(ctx, error):
+    if(isinstance(error, commands.MissingRequiredArgument)):
+        await ctx.send(f'Please specify the COG to load\nCorrect Usage: `-load <cog name>`')
 
-    if message.content.startswith(prefix):
-        # await message.channel.send('Hello!')
-        print('Received message from {0}'.format(message.author))
+@bot.command()
+async def unload(ctx, extension):
+    bot.unload_extension(f'cogs.{extension}')
+
+@unload.error
+async def load_error(ctx, error):
+    if(isinstance(error, commands.MissingRequiredArgument)):
+        await ctx.send(f'Please specify the COG to unload\n Correct Usage: `-unload <cog name>`')
+
+for filename in os.listdir('./cogs'):
+    if filename.endswith('.py'):
+        bot.load_extension(f'cogs.{filename[:-3]}')
 
 bot.run(token)
