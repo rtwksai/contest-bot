@@ -19,7 +19,9 @@
 ├── README.md
 └── utils
     ├── cf.py
-    └── he.py
+    ├── he.py
+    └── utility.py
+
 ```
 
 - `bot.py` consists of all the core methods to run the bot. It is just like the *main* file. 
