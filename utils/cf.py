@@ -11,7 +11,7 @@ class Codeforces:
         contest = r.json()['result']
         self.contests = []
         for c in contest:
-            if(c['phase'] != 'FINISHED' or 'PENDING_SYSTEM_TEST'):
+            if(c['phase'] != 'FINISHED' and 'PENDING_SYSTEM_TEST'):
                 self.contests.append(c)
         return self.contests
 
