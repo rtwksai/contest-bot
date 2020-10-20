@@ -14,13 +14,20 @@ class Embeds():
 
     def create_embed(self, name, value, date):
         '''For filling the data inside the embeds using the parameters'''
+        desc = '{0}\nDate: {1}\nTime: {2}'.format(value, 
+                                                  date.strftime("%A, %d %B %Y"), 
+                                                  date.strftime("%I:%M %p"))
         self.embed.add_field(name=name, 
-                             value=value, 
-                             inline=True)
+                             value=desc, 
+                             inline=False)
 
-        self.embed.add_field(name="Date", 
-                             value=date, 
-                             inline=True)
+        # self.embed.add_field(name="Date", 
+        #                 value=date.strftime("%A, %d %B %Y"), 
+        #                 inline=True)
+
+        # self.embed.add_field(name="Time", 
+        #                      value=date.strftime("%I:%M %p"), 
+        #                      inline=True)
 
     def get_embed(self):
         '''Returns the embed'''
