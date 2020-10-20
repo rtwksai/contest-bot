@@ -23,7 +23,7 @@ class Commands(commands.Cog):
         '''
         api_url = "https://codeforces.com/api/contest.list"
         c = cf.Codeforces(api_url)
-        result = c.getContests()
+        result = c.get_contests()
 
         title="Codeforces"
         url="https://codeforces.com/contests"
@@ -32,10 +32,8 @@ class Commands(commands.Cog):
 
         a = utility.Embeds(title, url, description, t_url)
 
-        #Change this algo, sort according to the nearing time
-        #Currently, it just takes the bottom three contests
-        for contest,i in zip(result[:len(result)-count-1:-1],range(count)):
-            name = "Contest"+str(i+1)
+        for contest in result[:count]:
+            name = "Contest: "+str(contest['id'])
             value = contest['name']
             date = datetime.fromtimestamp(contest['startTimeSeconds'])
             a.create_embed(name, value, date)
