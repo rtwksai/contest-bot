@@ -31,14 +31,13 @@ class Events(commands.Cog):
             await ctx.send_help(helper)
 
         elif isinstance(err, errors.CommandInvokeError):
-            error = traceback(err.original)
             if "2000 or fewer" in str(err) and len(ctx.message.clean_content) > 1900:
                 return await ctx.send(
                     "{message.author.mention} You attempted to make the command display more than 2,000 characters...\n"
                     "Both error and command will be ignored."
                 )
-
-            await ctx.send(f"{ctx.author.mention}\nThere was an error processing the command ;-;\n{error}")
+            print(err)
+            # await ctx.send(f"{ctx.author.mention}\nThere was an error processing the command ;-;\n{err}")
 
         elif isinstance(err, errors.CheckFailure):
             pass
