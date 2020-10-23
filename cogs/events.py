@@ -3,6 +3,8 @@ import discord
 import traceback
 from discord.ext import commands
 from discord.ext.commands import errors
+from utils import cf, utility
+# import nest_asyncio
 
 class Events(commands.Cog):
     def __init__(self, bot):
@@ -14,6 +16,7 @@ class Events(commands.Cog):
         The event triggered when an the bot is ready to be used
         """
         await self.bot.change_presence(status=discord.Status.online, activity=discord.Game('with Codes'))
+        # nest_asyncio.apply()
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx, err):
