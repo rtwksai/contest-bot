@@ -3,6 +3,7 @@ import discord
 from discord.ext import commands
 from utils import cf, utility
 from datetime import datetime
+import asyncio
 
 class Commands(commands.Cog):
     def __init__(self, bot):
@@ -40,6 +41,36 @@ class Commands(commands.Cog):
             x = a.get_embed()
 
         await ctx.author.send(embed=x)
+
+    @commands.command(name = 'notify')
+    async def notify_contest(self, ctx):
+        api_url = "https://codeforces.com/api/contest.list"
+        c = cf.Codeforces(api_url)
+        c.sendNotifications(ctx)
+
+
+    @commands.command(name = 'remind')
+    async def remind_contest(self, ctx, when_to_remind = 95000):
+        api_url = "https://codeforces.com/api/contest.list"
+        c = cf.Codeforces(api_url)
+        contest = c.get_contests()[1]
+        await asyncio.sleep(contest['relativeTimeSeconds']*(-1) - when_to_remind)
+
+        title="Codeforces"
+        url="https://codeforces.com/contests"
+        description="You wanted to be reminded of this!"
+        t_url="https://sta.codeforces.com/s/78793/favicon-32x32.png"
+
+        a = utility.Embeds(title, url, description, t_url)
+
+        name = "Contest: "+str(contest['id'])
+        value = contest['name']
+        date = datetime.fromtimestamp(contest['startTimeSeconds'])
+        a.create_embed(name, value, date)
+        x = a.get_embed()
+
+        await ctx.author.send(embed=x)
+
 
 def setup(bot):
     bot.add_cog(Commands(bot))
