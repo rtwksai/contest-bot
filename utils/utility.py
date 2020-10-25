@@ -1,13 +1,13 @@
 import discord
 
 class Embeds():
-    def __init__(self, platform, url, embed_description, thumbnail_url):
+    def __init__(self, platform, url, embed_description, thumbnail_url, color=0x4a90e2):
         self.platform = platform 
         self.url = url
         self.embed_description = embed_description
         self.thumbnail_url = thumbnail_url
         self.embed = discord.Embed(title=platform, 
-                        colour=discord.Colour(0x4a90e2), 
+                        colour=discord.Colour(color), 
                         url=self.url, 
                         description=self.embed_description)
         self.embed.set_thumbnail(url=self.thumbnail_url)
