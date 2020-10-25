@@ -54,11 +54,9 @@ class Codeforces:
             
     #         await asyncio.sleep(5*60)
 
-    async def async_sendNotifications(self, ctx):
+    async def send_notifications(self, ctx):
         contest_list = self.get_contests()
-        print(contest_list)
         for contest in self.get_valid_contests(contest_list):
-            print("ABC")
             title="Codeforces"
             url="https://codeforces.com/contests"
             description="List of upcoming contests on Codeforces"
@@ -73,17 +71,10 @@ class Codeforces:
             await ctx.send(embed=x)
         
 
-    def sendNotifications(self, ctx):
+    def notification_scheduler(self, ctx):
         try:
-            self.scheduler.add_job(self.async_sendNotifications, 'interval', args = [ctx], seconds=2*60)
+            self.scheduler.add_job(self.send_notifications, 'interval', args = [ctx], seconds=2*60*60*24)
             self.scheduler.start()
             self.loop.run_forever()
         except KeyboardInterrupt:
             loop.close()
-
-
-
-    # def set_noti_timings(self, relativeTimeSeconds, c):
-
-
-
