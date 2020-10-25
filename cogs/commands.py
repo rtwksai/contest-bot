@@ -3,11 +3,16 @@ import discord
 from discord.ext import commands
 from utils import cf, utility
 from datetime import datetime
+import time
 import asyncio
 
 class Commands(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.api_url = "https://codeforces.com/api/contest.list"
+        self.title="Codeforces"
+        self.url="https://codeforces.com/contests"
+        self.t_url="https://sta.codeforces.com/s/78793/favicon-32x32.png"
     
     @commands.command()
     async def ping(self, ctx):
@@ -22,54 +27,66 @@ class Commands(commands.Cog):
         Usage: -cfnext 
                -cfnext [count]
         '''
-        api_url = "https://codeforces.com/api/contest.list"
-        c = cf.Codeforces(api_url)
+        c = cf.Codeforces(self.api_url)
         result = c.get_contests()
-
-        title="Codeforces"
-        url="https://codeforces.com/contests"
         description="List of upcoming contests on Codeforces"
-        t_url="https://sta.codeforces.com/s/78793/favicon-32x32.png"
 
-        a = utility.Embeds(title, url, description, t_url)
+        a = utility.Embeds(self.title, self.url, description, self.t_url)
 
         for contest in result[:count]:
             name = "Contest: "+str(contest['id'])
             value = contest['name']
             date = datetime.fromtimestamp(contest['startTimeSeconds'])
             a.create_embed(name, value, date)
-            x = a.get_embed()
+            embed = a.get_embed()
 
-        await ctx.author.send(embed=x)
+        await ctx.author.send(embed=embed)
 
     @commands.command(name = 'notify')
     async def notify_contest(self, ctx):
-        api_url = "https://codeforces.com/api/contest.list"
-        c = cf.Codeforces(api_url)
-        c.sendNotifications(ctx)
+        c = cf.Codeforces(self.api_url)
+        c.notification_scheduler(ctx)
 
 
     @commands.command(name = 'remind')
-    async def remind_contest(self, ctx, when_to_remind = 95000):
-        api_url = "https://codeforces.com/api/contest.list"
-        c = cf.Codeforces(api_url)
-        contest = c.get_contests()[1]
+    async def remind_contest(self, ctx, when_to_remind = 95000, id=None):
+        '''Reminds you about the contest you asked a reminder for
+        Usage: -remind
+        -remind [hours:mins:secs]
+        Example: -remind
+        -remind 3
+        -remind 3:12
+        -remind 3:4:19
+        '''
+        # time_list = str(when_to_remind).split(':')
+        # h = int(time_list[0])
+        # m = int(time_list[1])
+        # s = int(time_list[2])
+        # when_to_remind = (h*60*60)+(m*60)+(s)
+
+        c = cf.Codeforces(self.api_url)
+        contest = c.get_contests()[0]
+        print(contest)
+
+        # if(when_to_remind > abs(contest['relativeTimeSeconds'])):
+        #     await ctx.author.send('Oops looks like contest would have begun before the mentioned time')
+        # elif(m>60 or s>60):
+        #     await ctx.author.send('Oops you might want to check time once more')            
+        # else:
         await asyncio.sleep(contest['relativeTimeSeconds']*(-1) - when_to_remind)
 
-        title="Codeforces"
-        url="https://codeforces.com/contests"
-        description="You wanted to be reminded of this!"
-        t_url="https://sta.codeforces.com/s/78793/favicon-32x32.png"
-
-        a = utility.Embeds(title, url, description, t_url)
+        title="Codeforces Contest Reminder"
+        description="Contest begins in {0}".format(time.strftime("%H hours, %M minutes, %S seconds",
+                                                    time.gmtime(abs(contest['relativeTimeSeconds']))))
+        a = utility.Embeds(title, self.url, description, self.t_url, 0xF93A2F)
 
         name = "Contest: "+str(contest['id'])
         value = contest['name']
         date = datetime.fromtimestamp(contest['startTimeSeconds'])
         a.create_embed(name, value, date)
-        x = a.get_embed()
+        embed = a.get_embed()
 
-        await ctx.author.send(embed=x)
+        await ctx.author.send(embed=embed)
 
 
 def setup(bot):
