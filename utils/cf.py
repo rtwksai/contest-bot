@@ -21,6 +21,14 @@ class Codeforces:
         self.contests = sorted(self.contests, key = lambda i: i['startTimeSeconds'])
         return self.contests
 
+    #Returns the contest object corresponding to the given id.
+    def find_contest(self, id):
+        contest_list = self.get_contests()
+        for c in contest_list:
+            if(str(c['id']) == str(id)):
+                return c
+        return None
+
     # Notification is sent 48 hrs before the event date on the channel.
     # This method just returns the valid list of contests which are eligible for notifications
     def get_valid_contests(self, contest_list):
